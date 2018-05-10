@@ -1,2 +1,2 @@
 FROM centos
-RUN yum update && yum install -y nginx
+RUN yum update && yum install -y nmap mc 
