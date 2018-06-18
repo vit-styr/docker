@@ -1,0 +1,20 @@
+---
+- name: Getting status code & Content-Lenght of domain which was migrated
+  hosts: localhost
+  gather_facts: false
+  tasks:
+
+    - name: Get status code
+      #shell: echo "domain" >> /tmp/test && curl -s -o /dev/null -LI -w "%{http_code}" http://de.de   | python -m json.tool  >> /tmp/test
+      shell: echo "domain" >> /tmp/test2 && curl -sLI borgteam4.com | grep -i http/ >> /tmp/test2
+
+    - name: Get Content-Length
+      #shell: curl -sI http://de.de | grep Content-Length | awk -F ":" '{print $2}' >> /tmp/test  # | python -m json.tool
+      shell: curl -sLI borgteam4.com | grep -i Content-Length >> /tmp/test2
+
+
+    - name: Compare files
+      shell: wdiff -s /tmp/test /tmp/test2 | tail -n 1 | awk '{print $5,$6}'
+      register: output
+
+    - debug: var=output
